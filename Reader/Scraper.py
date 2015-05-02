@@ -1,35 +1,41 @@
 import urllib2
 from bs4 import BeautifulSoup
-import re
 from datetime import datetime
 from models import Circular, Item
 
 
 class Scraper:
-    def __init__(self, link):
-        self.link = link
-
+    def __init__(self, url):
+        self.link = url  # url for Categories page of store
+        self.base_url = "http://plan.shoprite.com"
+        
+    @staticmethod
+    def full_url(link):
+        return "http://plan.shoprite.com" + link
+    
     @staticmethod
     def read_page(link):
-        return BeautifulSoup(urllib2.urlopen(link))
+        req = urllib2.Request(Scraper.full_url(link))
+        req.add_header('User-agent', 'Mozilla/5.0')
+        return BeautifulSoup(urllib2.urlopen(req).read())
 
     def scrape_category_data(self):
-        category_page = self.read_page(self.link)
+        category_page = self.read_page(Scraper.full_url(self.link))
         c = Circular()
         c.store = "Shop Rite Newton"
-        c.start = datetime.now()
-        c.end = datetime.now()
-        for link in self.find_tag(category_page, "a"):
-            #Rework to a less hard coded method maybe use a try to catch execptions
-            if len(link.contents) > 1:
-                contents = BeautifulSoup(link.contents[1]).prettify()
-                category_link = re.search(r'href="(.+Categories.+)"', str(link)).group(1)
-                category_name = re.search(r'alt="(.+)" class', contents).group(1)
-                Scraper.read_category(category_link, category_name)
+        c.start = c.end = datetime.now()
+        for link in self.find_tag(category_page, "a", "data-clientanalyticsaction", "Circular Categories"):
+            cat_link = link.get("href")
+            cat_name = link.get("data-clientanalyticslabel")
+            cat_name = cat_name[:cat_name.rfind(" - ")]
+            Scraper.read_category(cat_link, cat_name)
 
     @staticmethod
-    def find_tag(page, tag):
-        return page.find_all(tag)
+    def find_tag(page, tag, var=None, val=None):
+        if var and val:
+            return page.find_all(tag, {var: val})
+        else:
+            return page.find_all(tag)
 
     @staticmethod
     def create_item(list_item, cat_name):
@@ -40,9 +46,8 @@ class Scraper:
         new_item.save()
 
     @staticmethod
-    def read_category(category_link, category_name):
-        page = Scraper.read_page(category_link)
+    def read_category(link, name):
+        page = Scraper.read_page(link)
         for li in Scraper.find_tag(page, "li"):
-            Scraper.create_item(li, category_name)
+            Scraper.create_item(li, name)
         next_page = page.find_all("a", {"data-role": "button"})[0].get("href")
-
