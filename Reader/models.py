@@ -16,7 +16,7 @@ class Circular(models.Model):
 
 
 class Item(models.Model):
-    # circular = models.ForeignKey(Circular)
+    circular = models.ForeignKey(Circular)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
     price = models.CharField(max_length=255)
