@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Store(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     address = models.CharField(max_length=255)
     locale = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=40)
