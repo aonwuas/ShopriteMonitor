@@ -5,6 +5,7 @@ from django.db import models
 class Store(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
+    locale = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=40)
 
 
@@ -15,7 +16,7 @@ class Circular(models.Model):
 
 
 class Item(models.Model):
-    #circular = models.ForeignKey(Circular)
+    # circular = models.ForeignKey(Circular)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
     price = models.CharField(max_length=255)
