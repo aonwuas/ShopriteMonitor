@@ -8,7 +8,6 @@ class Store(models.Model):
     locale = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=40)
 
-
 class Circular(models.Model):
     store = models.ForeignKey(Store)
     start = models.DateField()

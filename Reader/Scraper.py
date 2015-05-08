@@ -1,5 +1,5 @@
 import urllib2
-from bs4 import BeautifulSoup  # , UnicodeDammit
+from bs4 import BeautifulSoup
 from models import Circular, Item, Store
 import stringformatter as fmt
 
