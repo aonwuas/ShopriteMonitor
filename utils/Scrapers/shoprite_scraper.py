@@ -1,18 +1,19 @@
 import urllib2
 from bs4 import BeautifulSoup
 
-
 def scrape_category_data(url):
-        # "Getting category names and links"
-        category_list_page = get_webpage_data(full_url(url))
-        # "Iterating over categories:"
-        for category_page_link in category_list_page.find_all("a", {"data-clientanalyticsaction": "Circular Categories"}):
-            link_to_category = category_page_link.get("href")
-            category_name = category_page_link.get("data-clientanalyticslabel")
-            category_name = category_name[:category_name.rfind(" - ")]
-            if category_name != "Store Services":
-                #  "   " + category_name
-                iterate_over_category_pages(full_url(link_to_category), category_name)
+    # "Getting category names and links"
+    category_list_page = get_webpage_data(full_url(url))
+    # "Iterating over categories:"
+    item_list = []
+    for category_page_link in category_list_page.find_all("a", {"data-clientanalyticsaction": "Circular Categories"}):
+        link_to_category = category_page_link.get("href")
+        category_name = category_page_link.get("data-clientanalyticslabel")
+        category_name = category_name[:category_name.rfind(" - ")]
+        if category_name != "Store Services":
+            print category_name
+            item_list = item_list + iterate_over_category_pages(full_url(link_to_category), category_name)
+    return item_list
 
 
 def circular_valid_dates(page):
@@ -68,12 +69,14 @@ def get_item_data(item_data, category_name):
 
 
 def iterate_over_category_pages(link_to_category, category_name):
-    page = get_webpage_data(link_to_category)
-    # Check for additional pages
-    for next_page_link in page.find_all("a", {"title": "Next Page"}):
-        next_page = full_url(next_page_link.get("href"))
-        #  Check if next page loops back to this page (end of pages)
-        if next_page == link_to_category:
-            return True
+    item_list = []
+    while True:
+        page = get_webpage_data(link_to_category)
+        for div in page.find_all("div", {"class": "grid-item"}):
+            item_list.append(get_item_data(div, category_name))
+        # Check for additional pages
+        next_page = page.find_all("a", {"title": "Next Page"})
+        if not next_page or full_url(next_page[0].get("href")) == link_to_category:
+            return item_list
         else:
-            return iterate_over_category_pages(next_page, category_name)
+            link_to_category = full_url(next_page[0].get("href"))
