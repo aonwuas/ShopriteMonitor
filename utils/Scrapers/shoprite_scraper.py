@@ -1,5 +1,7 @@
 import urllib2
 from bs4 import BeautifulSoup
+from ..StringManipulators import format_strings as s_format
+
 
 def scrape_category_data(url):
     # "Getting category names and links"
@@ -9,7 +11,7 @@ def scrape_category_data(url):
     for category_page_link in category_list_page.find_all("a", {"data-clientanalyticsaction": "Circular Categories"}):
         link_to_category = category_page_link.get("href")
         category_name = category_page_link.get("data-clientanalyticslabel")
-        category_name = category_name[:category_name.rfind(" - ")]
+        category_name = s_format.to_plain_string(category_name[:category_name.rfind(" - ")])
         if category_name != "Store Services":
             print category_name
             item_list = item_list + iterate_over_category_pages(full_url(link_to_category), category_name)
@@ -57,13 +59,14 @@ def get_webpage_data(link):
 def get_item_data(item_data, category_name):
     item = {}
     if item_data.find("h2").find("a", {"class": "show-more"}):
-        item["name"] = item_data.find("h2").find("a", {"class": "show-more"}).get("title")
+        item["name"] = s_format.to_plain_string(item_data.find("h2").find("a", {"class": "show-more"}).get("title"))
     else:
-        item["name"] = item_data.find("h2").contents
+        item["name"] = s_format.to_plain_string(item_data.find("h2").contents)
     if item_data.find("p", {"class": "price"}).find("a", {"class": "show-more"}):
-        item["price"] = item_data.find("p", {"class": "price"}).find("a", {"class": "show-more"}).get("title")
+        item["price"] = s_format.to_plain_string(item_data.find("p", {"class": "price"})
+                                                 .find("a", {"class": "show-more"}).get("title"))
     else:
-        item["price"] = item_data.find("p").contents
+        item["price"] = s_format.to_plain_string(item_data.find("p").contents)
     item["category"] = category_name
     return item
 
