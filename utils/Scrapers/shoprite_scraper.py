@@ -83,3 +83,7 @@ def iterate_over_category_pages(link_to_category, category_name):
             return item_list
         else:
             link_to_category = full_url(next_page[0].get("href"))
+"""
+for i in scrape_category_data("/Circular/ShopRite-of-Newton/8C15732/Categories"):
+    print i["name"] + "\t" + i["price"]
+"""
