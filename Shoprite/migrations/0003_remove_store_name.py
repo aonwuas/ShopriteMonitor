@@ -7,14 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Reader', '0001_initial'),
+        ('Shoprite', '0002_store_locale'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.RemoveField(
             model_name='store',
-            name='locale',
-            field=models.CharField(default='temp', max_length=255),
-            preserve_default=False,
+            name='name',
         ),
     ]

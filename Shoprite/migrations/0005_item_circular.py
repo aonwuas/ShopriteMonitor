@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Reader', '0003_remove_store_name'),
+        ('Shoprite', '0004_store_name'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='store',
-            name='name',
-            field=models.CharField(default='temp', unique=True, max_length=255),
+            model_name='item',
+            name='circular',
+            field=models.ForeignKey(default=1, to='Shoprite.Circular'),
             preserve_default=False,
         ),
     ]

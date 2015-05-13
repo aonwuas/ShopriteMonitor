@@ -1,11 +1,13 @@
 import urllib2
+
 from bs4 import BeautifulSoup
-from ..StringManipulators import format_strings as s_format
+
+from utils.common.StringManipulators import format_strings as s_format
 
 
-def scrape_category_data(url):
+def scrape_circular(partial_url):
     # "Getting category names and links"
-    category_list_page = get_webpage_data(full_url(url))
+    category_list_page = get_webpage_data(full_url(partial_url))
     # "Iterating over categories:"
     item_list = []
     for category_page_link in category_list_page.find_all("a", {"data-clientanalyticsaction": "Circular Categories"}):
@@ -13,9 +15,15 @@ def scrape_category_data(url):
         category_name = category_page_link.get("data-clientanalyticslabel")
         category_name = s_format.to_plain_string(category_name[:category_name.rfind(" - ")])
         if category_name != "Store Services":
-            print category_name
             item_list = item_list + iterate_over_category_pages(full_url(link_to_category), category_name)
     return item_list
+
+
+def circular_info(partial_url):
+    page = get_webpage_data(full_url(partial_url))
+    dates = circular_valid_dates(page)
+    store_info = store_location_and_number(page)
+    return dict(valid_dates=dates, info=store_info)
 
 
 def circular_valid_dates(page):

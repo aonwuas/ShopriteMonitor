@@ -1,7 +1,7 @@
 #  from django.shortcuts import render
 from django.http import HttpResponse
 import datetime
-from Reader.models import Store
+from Shoprite.models import Store
 # Create your views here.
 
 

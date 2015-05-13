@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from Reader import views as reader
+from Shoprite import views as reader
 
 urlpatterns = [
     # Examples:
