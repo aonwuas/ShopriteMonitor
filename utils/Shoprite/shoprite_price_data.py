@@ -16,6 +16,7 @@ def get_plus_card(price_string):
     else:
         return dict(bool=False, price=price_string)
 
+
 #  call flat_price last
 def flat_price(price_string):
     pattern = re.search(r'^\$([\d,\.]+)$', price_string)
@@ -23,6 +24,16 @@ def flat_price(price_string):
         return dict(bool=True, price=pattern.group(1))
     else:
         return dict(bool=False, price=price_string)
+
+
+"""
+def flat_reduction(price_string):
+    pattern = re.search(r'', price_string)
+    if pattern:
+        return dict(bool=True, price=pattern.group(1))
+    else:
+        return dict(bool=True, price=price_string)
+"""
 
 
 def x_for_y(price_string):
