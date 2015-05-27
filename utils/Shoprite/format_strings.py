@@ -13,7 +13,6 @@ def remove_extra_periods(string):
 
 
 def remove_extra_text(price_string):
-    global pattern
     pattern = price_string
     your_choice = re.search(r'(.*)(?i)your choice!?\s?(.*)', pattern)
     if your_choice:

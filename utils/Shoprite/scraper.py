@@ -1,8 +1,7 @@
 import urllib2
 
 from bs4 import BeautifulSoup
-
-from utils.common.StringManipulators import format_strings as s_format
+import utils.common.StringManipulators.format_strings as s_format
 
 
 def scrape_circular(partial_url):
@@ -82,6 +81,7 @@ def get_item_data(item_data, category_name):
 def iterate_over_category_pages(link_to_category, category_name):
     item_list = []
     while True:
+        print link_to_category
         page = get_webpage_data(link_to_category)
         for div in page.find_all("div", {"class": "grid-item"}):
             item_list.append(get_item_data(div, category_name))
