@@ -18,7 +18,7 @@ class Circular(models.Model):
 # Static item
 class Item(models.Model):
     name = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
+    category = models.CharField(max_length=128)
 
 
 class SaleItem(models.Model):
@@ -27,9 +27,15 @@ class SaleItem(models.Model):
     card_requirement = models.BooleanField(default=False)
 
 
+class Conditional(models.Model):
+    sale_item = models.ForeignKey(SaleItem)
+    buy = models.IntegerField()
+    get = models.IntegerField()
+
+
 class Units(models.Model):
     sale_item = models.ForeignKey(SaleItem)
-    unit = models.CharField(max_length=255)
+    unit = models.CharField(max_length=8)
 
 
 class FlatPriceItem(models.Model):
@@ -46,7 +52,8 @@ class XForYItem(models.Model):
 
 class FractionalReductionItem(models.Model):
     sale_item = models.ForeignKey(SaleItem)
-    fractional_reduction = models.CharField(max_length=255)
+    percent_reduction = models.IntegerField()
+    fractional_reduction = models.CharField(max_length=16)
 
 
 class PercentReductionItem(models.Model):
@@ -60,8 +67,6 @@ class RangedPriceItem(models.Model):
     maximum_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
-"""
-class FlatReductionItem(SaleItem):
+class FlatReductionItem(models.Model):
     sale_item = models.ForeignKey(SaleItem)
-    price_reduction = models.DecimalField(max_digits=None, decimal_places=2)
-"""
+    price_reduction = models.DecimalField(max_digits=6, decimal_places=2)

@@ -2,11 +2,13 @@ import re
 
 
 def cents_to_dollars(price_string):
-    pattern = re.search(r'([^0-9]*)([\d]+)\xa2(.*)', price_string)
+    # pattern = re.search(r'([^0-9]*)([\d]+)\xa2(.*)', price_string)
+    pattern = re.search(r'([^0-9]*)([\d]+)C(.*)', price_string)
     if pattern:
-       return "{0}$0.{1}{2}".format(pattern.group(1), pattern.group(2), pattern.group(3))
+        return "{0}$0.{1}{2}".format(pattern.group(1), pattern.group(2), pattern.group(3))
     else:
         return price_string
+
 
 def remove_extra_periods(string):
     pattern = re.sub(r'\.{2,}', '', string)
@@ -15,9 +17,14 @@ def remove_extra_periods(string):
 
 def remove_extra_text(price_string):
     pattern = price_string
+
     your_choice = re.search(r'(.*)(?i)your choice!?\s?(.*)', pattern)
     if your_choice:
         pattern = "{0}{1}".format(your_choice.group(1), your_choice.group(2))
+
+    only = re.search(r'(.*)(?i)only!?\s?(.*)', pattern)
+    if only:
+        pattern = "{0}{1}".format(only.group(1), only.group(2))
 
     wow = re.search(r'(.*)(?i)wow!?\s?(.*)', pattern)
     if wow:
