@@ -20,6 +20,7 @@ class Item(models.Model):
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
 
+
 class SaleItem(models.Model):
     static_item = models.ForeignKey(Item)
     circular = models.ForeignKey(Circular)
@@ -27,7 +28,7 @@ class SaleItem(models.Model):
 
 
 class Units(models.Model):
-    item = models.ForeignKey(SaleItem)
+    sale_item = models.ForeignKey(SaleItem)
     unit = models.CharField(max_length=255)
 
 

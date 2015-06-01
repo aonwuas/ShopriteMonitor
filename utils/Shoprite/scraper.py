@@ -1,5 +1,5 @@
 import urllib2
-
+import datetime
 from bs4 import BeautifulSoup
 import utils.common.StringManipulators.format_strings as s_format
 
@@ -25,6 +25,10 @@ def circular_info(partial_url):
     return dict(valid_dates=dates, info=store_info)
 
 
+def convert_date(string):
+    return datetime.datetime.strptime(string, "%m/%d/%y").strftime("%Y-%m-%d")
+
+
 def circular_valid_dates(page):
     for a in page.find_all("a", {"class": "megadrop-circular-name"}):
         tag = a.get("data-clientanalyticslabel")
@@ -34,7 +38,7 @@ def circular_valid_dates(page):
                 if ss.find(" - ") != -1:
                     start = ss[:ss.find(" - ")]
                     end = ss[-ss.rfind(" - "):]
-                    return {"start": start, "end": end}
+                    return {"start": convert_date(start), "end": convert_date(end)}
 
 
 def full_url(link):
@@ -81,7 +85,6 @@ def get_item_data(item_data, category_name):
 def iterate_over_category_pages(link_to_category, category_name):
     item_list = []
     while True:
-        print link_to_category
         page = get_webpage_data(link_to_category)
         for div in page.find_all("div", {"class": "grid-item"}):
             item_list.append(get_item_data(div, category_name))
@@ -91,7 +94,3 @@ def iterate_over_category_pages(link_to_category, category_name):
             return item_list
         else:
             link_to_category = full_url(next_page[0].get("href"))
-"""
-for i in scrape_category_data("/Circular/ShopRite-of-Newton/8C15732/Categories"):
-    print i["name"] + "\t" + i["price"]
-"""

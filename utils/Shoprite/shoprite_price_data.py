@@ -39,7 +39,8 @@ def flat_reduction(price_string):
 def x_for_y(price_string):
     pattern = re.search(r'([\d]+) (?i)for \$?([\d,\.]+)', price_string)
     if pattern:
-        return dict(bool=True, price=pattern.group(2), count=pattern.group(1))
+        return dict(bool=True, price=pattern.group(2), count=pattern.group(1),
+                    eff_price="{0:.2f}".format(float(pattern.group(2))/float(pattern.group(1))))
     else:
         return dict(bool=False, price=price_string)
 

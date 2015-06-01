@@ -1,3 +1,8 @@
-from utils.Shoprite.models_builder import build_circular as build
+#!/usr/bin/env python
+import os
 
-build("/Circular/ShopRite-of-Newton/8C15732/Categories")
+
+if __name__ == "__main__":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ShopriteMonitor.settings")
+    from utils.Shoprite.models_builder import build_circular as build
+    build("/Circular/ShopRite-of-Newton/8C15732/Categories")

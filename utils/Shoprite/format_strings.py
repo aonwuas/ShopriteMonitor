@@ -4,8 +4,9 @@ import re
 def cents_to_dollars(price_string):
     pattern = re.search(r'([^0-9]*)([\d]+)\xa2(.*)', price_string)
     if pattern:
-        return "{0}$0.{1}{2}".format(pattern.group(1), pattern.group(2), pattern.group(3))
-
+       return "{0}$0.{1}{2}".format(pattern.group(1), pattern.group(2), pattern.group(3))
+    else:
+        return price_string
 
 def remove_extra_periods(string):
     pattern = re.sub(r'\.{2,}', '', string)
