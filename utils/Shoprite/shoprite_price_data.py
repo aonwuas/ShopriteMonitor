@@ -19,7 +19,7 @@ def get_plus_card(price_string):
 
 #  call flat_price last
 def flat_price(price_string):
-    pattern = re.search(r'^\$([\d,\.]+)$', price_string)
+    pattern = re.search(r'\$([\d,\.]+)', price_string)
     if pattern:
         return dict(bool=True, price="{0:.2f}".format(float(pattern.group(1))))
     else:
@@ -55,11 +55,13 @@ def x_for_y(price_string):
 def fractional_reduction(price_string):
     pattern = re.search(r'.*((\d)/(\d))[\s]+(?i)price.*', price_string)
     if pattern:
-        return dict(bool=True, fractional_reduction=pattern.group(1), price="{0:.0f}".format(100*(1-(float(pattern.group(2))/float(pattern.group(3))))))
+        return dict(bool=True, fractional_reduction=pattern.group(1), price="{0:.0f}"
+                    .format(100*(1-(float(pattern.group(2))/float(pattern.group(3))))))
     else:
         pattern = re.search(r'.*((\d)/(\d))[\s]+(?i)off.*', price_string)
         if pattern:
-            return dict(bool=True, fractional_reduction=pattern.group(1), price="{0:.0f}".format(100*(float(pattern.group(2))/float(pattern.group(3)))))
+            return dict(bool=True, fractional_reduction=pattern.group(1), price="{0:.0f}"
+                        .format(100*(float(pattern.group(2))/float(pattern.group(3)))))
         else:
             return dict(bool=False, price=price_string)
 

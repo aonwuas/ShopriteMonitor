@@ -1,0 +1,9 @@
+{% if search_results %}
+    <ul>
+    {% for result in search_results %}
+        <li><a href="/search/item/{{ result.id }}/">{{ result.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No matches found.</p>
+{% endif %}

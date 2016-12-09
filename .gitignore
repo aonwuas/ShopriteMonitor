@@ -43,3 +43,8 @@ Temporary Items
 .apdisk
 .idea/workspace.xml
 .idea/dictionaries/onwuaa.xml
+
+
+#Python compiled code
+*.pyc
+

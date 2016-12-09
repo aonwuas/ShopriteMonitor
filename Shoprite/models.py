@@ -16,18 +16,18 @@ class Circular(models.Model):
 
 
 # Static item
-class Item(models.Model):
+class StaticItem(models.Model):
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=128)
 
 
 class SaleItem(models.Model):
-    static_item = models.ForeignKey(Item)
+    static_item = models.ForeignKey(StaticItem)
     circular = models.ForeignKey(Circular)
     card_requirement = models.BooleanField(default=False)
 
 
-class Conditional(models.Model):
+class ConditionalSale(models.Model):
     sale_item = models.ForeignKey(SaleItem)
     buy = models.IntegerField()
     get = models.IntegerField()
@@ -38,35 +38,35 @@ class Units(models.Model):
     unit = models.CharField(max_length=8)
 
 
-class FlatPriceItem(models.Model):
+class FlatPriceSale(models.Model):
     sale_item = models.ForeignKey(SaleItem)
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
-class XForYItem(models.Model):
+class XForYSale(models.Model):
     sale_item = models.ForeignKey(SaleItem)
     count = models.IntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     effective_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
-class FractionalReductionItem(models.Model):
+class FractionalReductionSale(models.Model):
     sale_item = models.ForeignKey(SaleItem)
     percent_reduction = models.IntegerField()
     fractional_reduction = models.CharField(max_length=16)
 
 
-class PercentReductionItem(models.Model):
+class PercentReductionSale(models.Model):
     sale_item = models.ForeignKey(SaleItem)
     percent_reduction = models.IntegerField()
 
 
-class RangedPriceItem(models.Model):
+class RangedPriceSale(models.Model):
     sale_item = models.ForeignKey(SaleItem)
     minimum_price = models.DecimalField(max_digits=6, decimal_places=2)
     maximum_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
-class FlatReductionItem(models.Model):
+class FlatReductionSale(models.Model):
     sale_item = models.ForeignKey(SaleItem)
     price_reduction = models.DecimalField(max_digits=6, decimal_places=2)

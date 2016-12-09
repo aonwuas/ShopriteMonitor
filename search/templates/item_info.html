@@ -1,0 +1,12 @@
+{% if sale_items %}
+    <ul>
+    {% for item in sale_items %}
+        <h3>{{item_name}}</h3>
+        <b>Card Required:</b> {{item.card_requirement}}<br>
+        <b>Circular id:</b> {{item.circular_id}}<br>
+        <b>Static id:</b> {{static_id}}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No matches found.</p>
+{% endif %}
